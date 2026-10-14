@@ -106,6 +106,14 @@ export async function clickBackgroundPopupProbe(
     probe.context === 'subframe' || probe.context === 'opaque'
       ? page.frameLocator('#background-probe').locator('#background-open')
       : page.locator('#background-open')
+  if (probe.context !== 'opaque') {
+    await locator.click(
+      probe.input === 'middle'
+        ? { button: 'middle', force: true }
+        : { modifiers: [backgroundModifier], force: true }
+    )
+    return
+  }
   await locator.click(
     probe.input === 'middle' ? { button: 'middle' } : { modifiers: [backgroundModifier] }
   )
