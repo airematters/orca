@@ -77,11 +77,11 @@ describe('bundled skill guide generator', () => {
       const projection = await readFile(path.join(projectDir, 'skills', name, 'SKILL.md'), 'utf8')
 
       // The routing frontmatter is the unchanged discovery surface.
-      expect(projection.startsWith(frontmatterBlock(source, `${name}.md`))).toBe(true)
-      // The stub is a thin hybrid pointer, not the full guide.
+      const frontmatter = frontmatterBlock(source, `${name}.md`)
+      expect(projection.startsWith(frontmatter)).toBe(true)
+      // Shared routing guidance can exceed a compact guide; its body still stays separate.
       expect(projection).not.toEqual(source)
-      expect(projection.length).toBeLessThan(source.length)
-      expect(projection).toContain('discovery stub')
+      expect(projection).not.toContain(source.slice(frontmatter.length).trim())
       expect(projection).toContain(`skills get ${name}`)
     }
   })
